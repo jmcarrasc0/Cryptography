@@ -1,9 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+	  <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>logonuget.ico</ApplicationIcon>
+    <PackageId>Jmcarrasc0.Cryptography</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Juan Carrasco</Authors>
+    <Company>Jmcarrasc0</Company>
+    <Copyright>jmcarrasc0 All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/jmcarrasc0/Cryptography</PackageProjectUrl>
+    <PackageIcon>logonuget.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/jmcarrasc0/Cryptography</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Minor operational improvements</PackageReleaseNotes>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <PackageTags>Encrypt, Decrypt, AES, Password, Hasher</PackageTags>
+    <Description>Paquete para la encryptacion de datos en diferentes formatos</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="logonuget.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="C:\Users\j_mca\Pictures\jmcarrasc0\logonuget.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

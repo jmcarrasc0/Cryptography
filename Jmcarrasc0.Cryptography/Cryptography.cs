@@ -74,7 +74,7 @@ namespace Jmcarrasc0.Cryptography
 
         public string Encrypt(string key, string data)
         {
-            string encData = null;
+            string encData = String.Empty;
             byte[][] keys = GetHashKeys(key);
 
             try
@@ -89,7 +89,7 @@ namespace Jmcarrasc0.Cryptography
 
         public string Decrypt(string key, string data)
         {
-            string decData = null;
+            string decData = String.Empty;
             byte[][] keys = GetHashKeys(key);
 
             try
@@ -101,13 +101,30 @@ namespace Jmcarrasc0.Cryptography
 
             return decData;
         }
+        public string CreateSHA512(string strData)
+        {
+            var message = Encoding.UTF8.GetBytes(strData);
+            using (var alg = SHA512.Create())
+            {
+                string hex = "";
+
+                var hashValue = alg.ComputeHash(message);
+                foreach (byte x in hashValue)
+                {
+                    hex += String.Format("{0:x2}", x);
+                }
+                return hex;
+            }
+        }
 
         private byte[][] GetHashKeys(string key)
         {
             byte[][] result = new byte[2][];
             Encoding enc = Encoding.UTF8;
 
+#pragma warning disable SYSLIB0021 // El tipo o el miembro están obsoletos
             SHA256 sha2 = new SHA256CryptoServiceProvider();
+#pragma warning restore SYSLIB0021 // El tipo o el miembro están obsoletos
 
             byte[] rawKey = enc.GetBytes(key);
             byte[] rawIV = enc.GetBytes(key);
@@ -126,29 +143,33 @@ namespace Jmcarrasc0.Cryptography
         //source: https://msdn.microsoft.com/de-de/library/system.security.cryptography.aes(v=vs.110).aspx
         private static string EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
+            // Check arguments.
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
             if (Key == null || Key.Length <= 0)
                 throw new ArgumentNullException("Key");
             if (IV == null || IV.Length <= 0)
                 throw new ArgumentNullException("IV");
-
             byte[] encrypted;
 
-            using (AesManaged aesAlg = new AesManaged())
+            // Create an Aes object
+            // with the specified key and IV.
+            using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
+                // Create an encryptor to perform the stream transform.
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
+                // Create the streams used for encryption.
                 using (MemoryStream msEncrypt = new MemoryStream())
                 {
-                    using (CryptoStream csEncrypt =
-                            new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                     {
                         using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                         {
+                            //Write all data to the stream.
                             swEncrypt.Write(plainText);
                         }
                         encrypted = msEncrypt.ToArray();
@@ -170,7 +191,7 @@ namespace Jmcarrasc0.Cryptography
             if (IV == null || IV.Length <= 0)
                 throw new ArgumentNullException("IV");
 
-            string plaintext = null;
+            string plaintext = String.Empty;
 
             using (Aes aesAlg = Aes.Create())
             {
